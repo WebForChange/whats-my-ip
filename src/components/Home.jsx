@@ -27,8 +27,8 @@ const Home = (props) => {
         `https://geo.ipify.org/api/v1?apiKey=${API_KEY}`
       );
       const { location } = response.data;
-      console.log("location: ", [location.lat, location.lng]);
-      setUserLocation([location.lat, location.lng]);
+      console.log("location: ", location);
+      setUserLocation(location);
     } catch (error) {
       console.error("Error fetching geolocation data:", error);
     }
@@ -46,19 +46,25 @@ const Home = (props) => {
       </div>
     );
   return (
-    <div className="bg-black text-white w-full min-h-screen flex justify-center items-center">
-      <div className="bg-zinc-800 w-160 p-6 rounded flex flex-row justify-center items-center">
-        <div className="flex flex-col">
-          <p>Your ip is: {userIp}</p>
+    <div className="bg-black text-white w-full min-h-screen flex flex-col justify-center items-center">
+      <h2 className="pb-6 text-2xl font-bold tracking-widest">What's my IP?</h2>
+      <p className="bg-zinc-500 mb-6 py-2 px-4 rounded font-bold tracking-widest">
+        YOUR IP: {userIp}
+      </p>
+      <div className="bg-zinc-800 w-2/3 p-6 rounded flex flex-row ">
+        <div className="flex basis-40 grow flex-col">
           <p>
-            Your location is: {userLocation[0]}, {userLocation[1]}
+            Your location: {userLocation.lat}, {userLocation.lng}
           </p>
+          <p>Country: {userLocation.country}</p>
+          <p>Region: {userLocation.Catalunya}</p>
+          <p>Timezone: {userLocation.timezone}</p>
         </div>
         <MapContainer
-          className="h-80 w-full"
-          center={userLocation}
-          zoom={8}
-          scrollWheelZoom={false}
+          className="h-80 flex basis-40 grow rounded"
+          center={[userLocation.lat, userLocation.lng]}
+          zoom={4}
+          scrollWheelZoom={true}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
